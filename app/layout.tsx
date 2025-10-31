@@ -21,6 +21,7 @@ export const metadata: Metadata = {
   description: "Template by Runerra",
 };
 
+
 export default async function RootLayout({
   children,
 }: Readonly<{

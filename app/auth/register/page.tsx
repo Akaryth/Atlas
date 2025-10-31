@@ -12,10 +12,11 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"
+import PixelBlast from "@/components/PixelBlast"
 
 export default function Page() {
-    const router = useRouter();
+    const router = useRouter()
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [username, setUsername] = useState("")
@@ -52,8 +53,6 @@ export default function Page() {
         setLoading(true)
         setMessage("")
         setFieldErrors({})
-        
-
 
         try {
             const res = await fetch("/api/auth/register", {
@@ -65,7 +64,6 @@ export default function Page() {
             const data = await res.json()
 
             if (!res.ok) {
-                // handle unique constraint errors
                 if (data.error?.includes("email")) setFieldErrors((prev) => ({ ...prev, email: "Email already in use" }))
                 if (data.error?.includes("userName")) setFieldErrors((prev) => ({ ...prev, username: "Username already in use" }))
                 throw new Error("Please fix the errors below")
@@ -93,12 +91,28 @@ export default function Page() {
         errors.length &&
         errors.uppercase &&
         errors.number &&
-        errors.special;
+        errors.special
+
     return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="relative flex min-h-svh w-full items-center justify-center p-6 md:p-10 overflow-hidden">
+            {/* PixelBlast Background */}
+            <div className="absolute inset-0 -z-10">
+                <PixelBlast
+                    variant="diamond"
+                    pixelSize={3}
+                    patternScale={4.75}
+                    patternDensity={0.75}
+                    pixelSizeJitter={0.4}
+                    speed={0.15}
+                    edgeFade={0.31}
+                    enableRipples={true}
+                    className="size-full" 
+                    style={undefined} />
+            </div>
+
             <div className="w-full max-w-sm">
                 <div className={cn("flex flex-col gap-6")}>
-                    <Card>
+                    <Card className="rounded-xl backdrop-blur-md bg-background/70 border-border/40">
                         <CardHeader>
                             <CardTitle>Create account</CardTitle>
                             <CardDescription>
@@ -139,14 +153,16 @@ export default function Page() {
 
                                 {/* Password */}
                                 <div className="grid gap-3">
-                                    <Label htmlFor="password">Password</Label>
-                                    <button
-                                        type="button"
-                                        className="ml-auto text-sm underline hover:opacity-80"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                    >
-                                        {showPassword ? "Hide" : "Show"}
-                                    </button>
+                                    <div className="flex items-center">
+                                        <Label htmlFor="password">Password</Label>
+                                        <button
+                                            type="button"
+                                            className="ml-auto text-sm underline hover:opacity-80"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                        >
+                                            {showPassword ? "Hide" : "Show"}
+                                        </button>
+                                    </div>
                                     <Input
                                         id="password"
                                         type={showPassword ? "text" : "password"}
@@ -163,21 +179,21 @@ export default function Page() {
                                         disabled={loading}
                                     />
                                     {passwordTouched && (
-  <ul className="text-sm list-disc pl-5 space-y-1">
-    <li className={cn("transition-colors", errors.length ? "text-green-500" : "text-red-500")}>
-      At least 16 characters
-    </li>
-    <li className={cn("transition-colors", errors.uppercase ? "text-green-500" : "text-red-500")}>
-      At least 1 uppercase letter
-    </li>
-    <li className={cn("transition-colors", errors.number ? "text-green-500" : "text-red-500")}>
-      At least 1 number
-    </li>
-    <li className={cn("transition-colors", errors.special ? "text-green-500" : "text-red-500")}>
-      At least 1 special character
-    </li>
-  </ul>
-)}
+                                        <ul className="text-sm list-disc pl-5 space-y-1">
+                                            <li className={cn("transition-colors", errors.length ? "text-green-500" : "text-red-500")}>
+                                                At least 16 characters
+                                            </li>
+                                            <li className={cn("transition-colors", errors.uppercase ? "text-green-500" : "text-red-500")}>
+                                                At least 1 uppercase letter
+                                            </li>
+                                            <li className={cn("transition-colors", errors.number ? "text-green-500" : "text-red-500")}>
+                                                At least 1 number
+                                            </li>
+                                            <li className={cn("transition-colors", errors.special ? "text-green-500" : "text-red-500")}>
+                                                At least 1 special character
+                                            </li>
+                                        </ul>
+                                    )}
                                 </div>
 
                                 {/* Submit */}
