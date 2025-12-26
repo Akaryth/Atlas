@@ -1,6 +1,6 @@
 {
-  "name": "runerra-template",
-  "version": "0.2.0",
+  "name": "atlas",
+  "version": "0.2.1",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
